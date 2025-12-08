@@ -5,6 +5,10 @@ const fetch = require('node-fetch');
 const app = express();
 app.use(express.json());
 
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 // Простая память для антиспама по IP
 const lastRequests = new Map();
 const WINDOW_MS = 60 * 1000;      // окно 60 секунд
