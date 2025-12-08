@@ -1,8 +1,20 @@
 ﻿require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const fetch = require('node-fetch');
 
 const app = express();
+
+// CORS для фронтенда
+app.use(
+  cors({
+    origin: ['https://anna-astrolog.com', 'https://www.anna-astrolog.com'],
+    methods: ['POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+  })
+);
+app.options('/submit', cors());
+
 app.use(express.json());
 
 app.get('/health', (req, res) => {
