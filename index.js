@@ -8,7 +8,12 @@ const app = express();
 // CORS для фронтенда
 app.use(
   cors({
-    origin: ['https://anna-astrolog.com', 'https://www.anna-astrolog.com'],
+    origin: [
+      'https://anna-astrolog.com',
+      'https://www.anna-astrolog.com',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ],
     methods: ['POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
   })
@@ -53,7 +58,7 @@ app.post('/submit', async (req, res) => {
       .json({ ok: false, error: 'too_many_requests', message: 'Слишком много попыток. Попробуйте позже.' });
   }
 
-  const { name, contact, email, comment, website } = req.body || {};
+  const { name, contact, email, comment, website, service } = req.body || {};
 
   // Honeypot: если скрытое поле заполнено — считаем, что это бот
   if (website) {
@@ -78,9 +83,10 @@ app.post('/submit', async (req, res) => {
 
   const lines = [
     'Новая заявка с сайта anna-astrolog.com',
+    service ? `Консультация: ${service}` : null,
     `Имя: ${name}`,
     `Контакт: ${contact}`,
-  ];
+  ].filter(Boolean);
 
   if (email) {
     lines.push(`Email: ${email}`);
